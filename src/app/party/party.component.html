@@ -1,0 +1,11 @@
+<div *ngIf="party">
+  <h1>{{party.title}}</h1>
+
+  Partagez cet événement : {{url}}
+
+    <app-category
+      *ngFor="let category of party.categories | values"
+      [category]="category"
+      (addItem)="addItem($event, category)"
+    ></app-category>
+</div>

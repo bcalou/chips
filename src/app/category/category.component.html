@@ -1,0 +1,9 @@
+<h2>{{category.title}}</h2>
+
+<app-item *ngFor="let item of category.items" [item]="item">
+</app-item>
+
+<form (ngSubmit)="submitItem()">
+  <input [(ngModel)]="newItem.title" name="title" required>
+  <input type="submit">
+</form>
