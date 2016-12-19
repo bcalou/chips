@@ -39,13 +39,31 @@ export class PartyService {
 
   // Add an item to a category
   addItem(party: Party, category: any, item: Item) {
-    let key = party['$key'] + '/categories/' + category.id + '/items';
+    let key = this.getItemsListKey(party, category);
 
     if(!category.items) {
-      category.items = [];
+      category.items = {};
     }
-    category.items.push(item);
+    category.items[this.generateId()] = item;
     this.af.database.list('/parties').update(key, category.items);
+  }
+
+  // Remove an item from a category
+  removeItem(party: Party, category: any, item: Item) {
+    let key = this.getItemsListKey(party, category);
+
+    for(let itemKey of Object.keys(category.items)) {
+      if(category.items[itemKey] == item) {
+        key = key + '/' + itemKey;
+      }
+    }
+
+    this.af.database.list('/parties').remove(key);
+  }
+
+  // Get the firebase key of an items list
+  getItemsListKey(party: Party, category: any) {
+    return party['$key'] + '/categories/' + category.id + '/items';
   }
 
   // Generate a unique party id

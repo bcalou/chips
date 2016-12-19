@@ -22,6 +22,16 @@ export class PartyComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.getParty();
+    this.url = this.getPageUrl();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  // Get party based on the url
+  getParty() {
     this.subscription = this.route.params.subscribe(
       (params: any) => {
         this.partyService.get(params.id).subscribe((parties) => {
@@ -29,12 +39,6 @@ export class PartyComponent implements OnInit {
         });
       }
     );
-
-    this.url = this.getPageUrl();
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 
   // Get current page url
@@ -46,5 +50,11 @@ export class PartyComponent implements OnInit {
   // Add an item to a category
   addItem($event, category) {
     this.partyService.addItem(this.party, category, $event.item);
+  }
+
+  // Remove an item from a category
+  removeItem($event, category) {
+    console.log(this.party, category, $event.item);
+    this.partyService.removeItem(this.party, category, $event.item)
   }
 }

@@ -9,6 +9,7 @@ import { PartyService } from '../party.service';
 })
 export class CategoryComponent implements OnInit {
   @Output() addItem: EventEmitter<any> = new EventEmitter();
+  @Output() removeItem: EventEmitter<any> = new EventEmitter();
   @Input() category: any;
   private newItem: Item = new Item();
 
@@ -21,5 +22,10 @@ export class CategoryComponent implements OnInit {
   submitItem() {
     this.addItem.emit({item: this.newItem});
     this.newItem = new Item();
+  }
+
+  // Remove an item from the category
+  onRemoveItem(item: Item) {
+    this.removeItem.emit({item: item});
   }
 }

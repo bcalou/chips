@@ -1,7 +1,12 @@
 <h2>{{category.title}}</h2>
 
-<app-item *ngFor="let item of category.items" [item]="item">
-</app-item>
+<ul>
+  <li appItem
+    *ngFor="let item of category.items | values"
+    [item]="item"
+    (remove)="onRemoveItem(item)">
+  </li>
+</ul>
 
 <form (ngSubmit)="submitItem()">
   <input [(ngModel)]="newItem.title" name="title" required>

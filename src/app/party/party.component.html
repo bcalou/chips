@@ -7,5 +7,6 @@
       *ngFor="let category of party.categories | values"
       [category]="category"
       (addItem)="addItem($event, category)"
+      (removeItem)="removeItem($event, category)"
     ></app-category>
 </div>
