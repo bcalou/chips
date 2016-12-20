@@ -46,4 +46,9 @@ export class UserService {
     Cookie.set('userName', userName, 365);
     this.userIdentified.complete();
   }
+
+  // Get the user name
+  getUserName() {
+    return Cookie.get('userName');
+  }
 }

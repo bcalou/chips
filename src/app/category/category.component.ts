@@ -59,6 +59,6 @@ export class CategoryComponent implements OnInit {
   focusOnNewItemInput() {
     setTimeout(() => {
       this.newItemInput.nativeElement.focus()
-    }, 1000);
+    });
   }
 }

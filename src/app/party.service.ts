@@ -4,6 +4,7 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import 'rxjs/add/operator/first';
 import { Party } from './party/party';
 import { Item } from './item/item';
+import { UserService } from './user.service';
 
 @Injectable()
 export class PartyService {
@@ -14,7 +15,7 @@ export class PartyService {
     'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
   ];
 
-  constructor(private af: AngularFire) { }
+  constructor(private af: AngularFire, private userService: UserService) { }
 
   // Fetch a party based on its id
   get(id: number) {
@@ -44,6 +45,8 @@ export class PartyService {
     if(!category.items) {
       category.items = {};
     }
+
+    item.setUser(this.userService.getUserName());
     category.items[this.generateId()] = item;
     this.af.database.list('/parties').update(key, category.items);
   }
