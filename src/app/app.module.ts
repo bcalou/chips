@@ -10,10 +10,13 @@ import { CreateComponent } from './create/create.component';
 import { PartyComponent } from './party/party.component';
 import { CategoryComponent } from './category/category.component';
 import { ItemComponent } from './item/item.component';
-import { ValuesPipe } from './values.pipe';
+import { UserComponent } from './user/user.component';
 
 import { UserService } from './user.service';
-import { UserComponent } from './user/user.component';
+import { PartyService } from './party.service';
+
+import { ValuesPipe } from './values.pipe';
+import { OrderByPipe } from './order-by.pipe';
 
 const appRoutes: Routes = [
   { path: 'party/:id', component: PartyComponent },
@@ -36,7 +39,8 @@ export const firebaseConfig = {
     CategoryComponent,
     ItemComponent,
     ValuesPipe,
-    UserComponent
+    UserComponent,
+    OrderByPipe,
   ],
   imports: [
     BrowserModule,
@@ -45,7 +49,10 @@ export const firebaseConfig = {
     RouterModule.forRoot(appRoutes),
     AngularFireModule.initializeApp(firebaseConfig)
   ],
-  providers: [UserService],
+  providers: [
+    PartyService,
+    UserService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

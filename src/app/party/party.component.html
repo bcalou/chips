@@ -1,10 +1,10 @@
 <div *ngIf="party">
-  <h1>{{party.title}}</h1>
+  <h1 class="text-center">{{party.title}}</h1>
 
   Partagez cet événement : {{url}}
 
     <app-category
-      *ngFor="let category of party.categories | values"
+      *ngFor="let category of party.categories | values | orderBy: ['order']"
       [category]="category"
       (addItem)="addItem($event, category)"
       (removeItem)="removeItem($event, category)"

@@ -1,0 +1,25 @@
+:host {
+  position: relative;
+  padding: 15px 40px;
+  text-align: center;
+  border-bottom: 1px solid black;
+}
+
+.item__title {
+  font-size: 1.8rem;
+}
+
+.item__user {
+  color: #666;
+}
+
+.item__actions {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.item__remove {
+  font-weight: bold;
+}

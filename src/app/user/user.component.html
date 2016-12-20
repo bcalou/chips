@@ -1,7 +1,8 @@
 Un p'tit nom ?
 <form (ngSubmit)="saveUserIdentity()">
-  <input [(ngModel)]="userName" name="userName" required #userNameInput>
-  <input type="submit">
+  <input
+    [(ngModel)]="userName" name="name" required #userNameInput>
+  <input type="submit" class="btn btn-primary">
 </form>
 
-<button (click)="hideComponent()">Fermer</button>
+<button (click)="hideComponent()" class="btn btn-default">Fermer</button>

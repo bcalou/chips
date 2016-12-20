@@ -4,7 +4,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 @Injectable()
 export class UserService {
   private userIdentificationMethod: any;
-  private userIdentified: EventEmitter<any>;
+  private userIdentificationEvents: EventEmitter<any>;
 
   constructor() {
     this.createIdentificationEventEmitter();
@@ -12,16 +12,21 @@ export class UserService {
 
   // Create identification event emitter
   createIdentificationEventEmitter() {
-    this.userIdentified = new EventEmitter();
+    this.userIdentificationEvents = new EventEmitter();
 
-    if(Cookie.get('userName') != null) {
-      this.userIdentified.complete();
+    if(this.userIsIdentified()) {
+      this.userIdentificationEvents.complete();
     }
+  }
+
+  // Returns identification event emitter
+  getUserIdentificationEvents() {
+    return this.userIdentificationEvents;
   }
 
   // Check if user informations exist
   userIsIdentified() {
-    return this.userIdentified;
+    return Cookie.get('userName') != null;
   }
 
   // Register the user method for future triggering
@@ -43,8 +48,8 @@ export class UserService {
 
   // Save user identify
   saveUserIdentity(userName: string) {
-    Cookie.set('userName', userName, 365);
-    this.userIdentified.complete();
+    Cookie.set('userName', userName, 365, '/');
+    this.userIdentificationEvents.complete();
   }
 
   // Get the user name

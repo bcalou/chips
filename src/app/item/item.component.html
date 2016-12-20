@@ -1,5 +1,6 @@
-{{item.title}} (Ajouté par {{item.user}})
+<p class="item__title">{{item.title}}</p>
+<p class="item__user">Ajouté par {{item.user}}</p>
 
-<form (ngSubmit)="onRemove()">
-  <input type="submit" value="Supprimer">
+<form (ngSubmit)="onRemove()" class="item__actions">
+  <input type="submit" value="X" class="btn btn-danger btn-sm item__remove">
 </form>

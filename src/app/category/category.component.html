@@ -1,18 +1,35 @@
-<h2>{{category.title}}</h2>
+<h3 class="category__title text-capitalize text-center" (click)="toggle()">
+  {{category.title}}
+</h3>
+<div *ngIf="category.items" class="category__count">
+  <span>{{getItemsLength()}}</span>
+</div>
 
-<ul>
-  <li appItem
-    *ngFor="let item of category.items | values"
-    [item]="item"
-    (remove)="onRemoveItem(item)">
-  </li>
-</ul>
+<div class="category__content">
+  <ul>
+    <li appItem
+      *ngFor="let item of category.items | values | orderBy: ['timestamp']"
+      [item]="item"
+      (remove)="onRemoveItem(item)">
+    </li>
+  </ul> 
 
-<form [hidden]="!userIsIdentified" (ngSubmit)="submitItem()">
-  <input [(ngModel)]="newItem.title" name="title" #newItemInput>
-  <input type="submit">
-</form>
+  <form [hidden]="!userIsIdentified" (ngSubmit)="submitItem()">
+    <input
+      [(ngModel)]="newItem.title"
+      name="itemTitle"
+      #newItemInput
+      class="category__newItemInput"
+    >
+    <input type="submit" class="caregory__newItemSubmit">
+  </form>
 
-<form *ngIf="!userIsIdentified" (ngSubmit)="identifyUser()">
-  <input type="submit" value="Ajouter quelque chose">
-</form>
+  <form *ngIf="!userIsIdentified" (ngSubmit)="identifyUser()">
+    <input
+      type="submit"
+      value="Ajouter quelque chose"
+      class="btn btn-primary btn-block"
+    >
+  </form>
+
+</div>

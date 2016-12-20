@@ -1,5 +1,5 @@
 import { Component, OnInit, Input,Output, EventEmitter,
-         ViewChild, ElementRef } from '@angular/core';
+         ViewChild, ElementRef, HostBinding } from '@angular/core';
 import { Item } from '../item/item';
 import { PartyService } from '../party.service';
 import { UserService } from '../user.service';
@@ -14,6 +14,7 @@ export class CategoryComponent implements OnInit {
   @Output() removeItem: EventEmitter<any> = new EventEmitter();
   @Input() category: any;
   @ViewChild("newItemInput") newItemInput: ElementRef;
+  @HostBinding('class.category--open') open: boolean = false;
   private newItem: Item = new Item();
   private userIsIdentified: boolean;
   private waitingForFocus: boolean; 
@@ -29,7 +30,7 @@ export class CategoryComponent implements OnInit {
 
   // Wait for user identification
   watchUserIdentification() {
-    this.userService.userIsIdentified().subscribe(null, null, () => {
+    this.userService.getUserIdentificationEvents().subscribe(null, null, () => {
       this.userIsIdentified = true;
 
       if(this.waitingForFocus) {
@@ -60,5 +61,14 @@ export class CategoryComponent implements OnInit {
     setTimeout(() => {
       this.newItemInput.nativeElement.focus()
     });
+  }
+
+  // Get number of items inside category
+  getItemsLength() {
+    return Object.keys(this.category.items).length;
+  }
+
+  toggle() {
+    this.open = !this.open;
   }
 }
