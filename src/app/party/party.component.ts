@@ -54,7 +54,6 @@ export class PartyComponent implements OnInit {
 
   // Remove an item from a category
   removeItem($event, category) {
-    console.log(this.party, category, $event.item);
     this.partyService.removeItem(this.party, category, $event.item)
   }
 }

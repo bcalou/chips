@@ -1,0 +1,7 @@
+Un p'tit nom ?
+<form (ngSubmit)="saveUserIdentity()">
+  <input [(ngModel)]="userName" name="userName" required #userNameInput>
+  <input type="submit">
+</form>
+
+<button (click)="hideComponent()">Fermer</button>

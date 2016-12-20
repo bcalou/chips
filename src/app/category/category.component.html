@@ -8,7 +8,11 @@
   </li>
 </ul>
 
-<form (ngSubmit)="submitItem()">
-  <input [(ngModel)]="newItem.title" name="title" required>
+<form [hidden]="!userIsIdentified" (ngSubmit)="submitItem()">
+  <input [(ngModel)]="newItem.title" name="title" #newItemInput>
   <input type="submit">
+</form>
+
+<form *ngIf="!userIsIdentified" (ngSubmit)="identifyUser()">
+  <input type="submit" value="Ajouter quelque chose">
 </form>

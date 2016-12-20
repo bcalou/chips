@@ -12,6 +12,9 @@ import { CategoryComponent } from './category/category.component';
 import { ItemComponent } from './item/item.component';
 import { ValuesPipe } from './values.pipe';
 
+import { UserService } from './user.service';
+import { UserComponent } from './user/user.component';
+
 const appRoutes: Routes = [
   { path: 'party/:id', component: PartyComponent },
   { path: '', component: CreateComponent }
@@ -32,7 +35,8 @@ export const firebaseConfig = {
     PartyComponent,
     CategoryComponent,
     ItemComponent,
-    ValuesPipe
+    ValuesPipe,
+    UserComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +45,7 @@ export const firebaseConfig = {
     RouterModule.forRoot(appRoutes),
     AngularFireModule.initializeApp(firebaseConfig)
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
