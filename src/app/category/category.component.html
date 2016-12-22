@@ -12,7 +12,7 @@
       [item]="item"
       (remove)="onRemoveItem(item)">
     </li>
-  </ul> 
+  </ul>
 
   <form [hidden]="!userIsIdentified" (ngSubmit)="submitItem()">
     <input
@@ -21,7 +21,7 @@
       #newItemInput
       class="category__newItemInput"
     >
-    <input type="submit" class="caregory__newItemSubmit">
+    <input type="submit" class="caregory__newItemSubmit btn btn-primary">
   </form>
 
   <form *ngIf="!userIsIdentified" (ngSubmit)="identifyUser()">
