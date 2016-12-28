@@ -13,23 +13,16 @@
       (remove)="onRemoveItem(item)">
     </li>
   </ul>
+  <p *ngIf="isEmpty()">Rien pour le moment</p>
 
-  <form [hidden]="!userIsIdentified" (ngSubmit)="submitItem()">
+  <form (ngSubmit)="submitItem()">
     <input
       [(ngModel)]="newItem.title"
       name="itemTitle"
-      #newItemInput
       class="category__newItemInput"
+      [placeholder]="category.placeholder"
+      required
     >
     <input type="submit" class="caregory__newItemSubmit btn btn-primary">
   </form>
-
-  <form *ngIf="!userIsIdentified" (ngSubmit)="identifyUser()">
-    <input
-      type="submit"
-      value="Ajouter quelque chose"
-      class="btn btn-primary btn-block"
-    >
-  </form>
-
 </div>

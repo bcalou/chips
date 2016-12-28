@@ -1,59 +1,81 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { Observable, Subject } from 'rxjs';
+import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { RandomService } from './random.service';
+import { User } from './user/user';
 
 @Injectable()
 export class UserService {
-  private userIdentificationMethod: any;
-  private userIdentificationEvents: EventEmitter<any>;
+  private identificationSubject: Subject<any>;
+  private user: User;
 
-  constructor() {
-    this.createIdentificationEventEmitter();
-  }
-
-  // Create identification event emitter
-  createIdentificationEventEmitter() {
-    this.userIdentificationEvents = new EventEmitter();
+  constructor(private af: AngularFire) {
+    this.setIdentificationSubject();
 
     if(this.userIsIdentified()) {
-      this.userIdentificationEvents.complete();
+      this.fetchUser();
     }
   }
 
-  // Returns identification event emitter
-  getUserIdentificationEvents() {
-    return this.userIdentificationEvents;
+  // Create a subject to watch identification subject
+  setIdentificationSubject() {
+    this.identificationSubject = new Subject();
+
+    if(this.userIsIdentified()) {
+      this.identificationSubject.complete();
+    }
+  }
+
+  // Return the identification subject to watch identification process
+  getIdentificationSubject() {
+    return this.identificationSubject;
   }
 
   // Check if user informations exist
   userIsIdentified() {
-    return Cookie.get('userName') != null;
+    return Cookie.get('userId') != null;
   }
 
-  // Register the user method for future triggering
-  registerUserIdentificationMethod(
-    userIdentificationMethod: any,
-    context: Object
-  ) {
-    this.userIdentificationMethod = userIdentificationMethod.bind(context);
-  }
-
-  // Trigger the registered user component
+  // Ask for user identification if needed
   identifyUser() {
-    try {
-      this.userIdentificationMethod.call();
-    } catch(e) {
-      console.error(e);
-    }
+    this.identificationSubject.next();
+
+    return this.identificationSubject;
   }
 
   // Save user identify
   saveUserIdentity(userName: string) {
-    Cookie.set('userName', userName, 365, '/');
-    this.userIdentificationEvents.complete();
+    this.user = new User(userName);
+    Cookie.set('userId', this.user.getId(), 365, '/');
+
+    this.af.database.list('/users').push(this.user).then(() => {
+      this.identificationSubject.complete();
+    });
   }
 
-  // Get the user name
-  getUserName() {
-    return Cookie.get('userName');
+  // Fetch user
+  fetchUser() {
+    this.af.database.list('/users', {
+      query: {
+        orderByChild: 'id',
+        equalTo: this.getUserId()
+      }
+    }).subscribe((users) => {
+      this.user = users[0];
+    });
+  }
+
+  // Get a user object reduced to its basic properties
+  getBasicUser() {
+    return {
+      "id": this.user.id,
+      "name": this.user.name
+    }
+  }
+
+  // Get the current user id
+  getUserId() {
+    return Cookie.get('userId');
   }
 }

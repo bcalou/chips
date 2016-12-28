@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
-import { AngularFireModule } from 'angularfire2';
+import { FIREBASE_PROVIDERS, AngularFireModule } from 'angularfire2';
 
 import { AppComponent } from './app.component';
 import { CreateComponent } from './create/create.component';
@@ -14,6 +14,8 @@ import { UserComponent } from './user/user.component';
 
 import { UserService } from './user.service';
 import { PartyService } from './party.service';
+import { AppStateService } from './app-state.service';
+import { RandomService } from './random.service';
 
 import { ValuesPipe } from './values.pipe';
 import { OrderByPipe } from './order-by.pipe';
@@ -51,7 +53,10 @@ export const firebaseConfig = {
   ],
   providers: [
     PartyService,
-    UserService
+    UserService,
+    AppStateService,
+    RandomService,
+    FIREBASE_PROVIDERS
   ],
   bootstrap: [AppComponent]
 })

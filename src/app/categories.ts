@@ -21,7 +21,7 @@ export const categories = {
     order: 4,
     id: 'cheese',
     title: 'fromage',
-    placeholder: 'La Foune'
+    placeholder: 'La Fougne'
   },
   dessert: {
     order: 5,

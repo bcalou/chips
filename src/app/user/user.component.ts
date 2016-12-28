@@ -15,7 +15,11 @@ export class UserComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit() {
-    this.userService.registerUserIdentificationMethod(this.showComponent, this);
+    this.userService.getIdentificationSubject().subscribe({
+        next: () => { this.showComponent() },
+        error: () => {},
+        complete: () => { this.hideComponent() }
+    });
   }
 
   // Show the component and focus on the main field
@@ -35,6 +39,5 @@ export class UserComponent implements OnInit {
   // Save user identify
   saveUserIdentity() {
     this.userService.saveUserIdentity(this.userName);
-    this.hideComponent();
   }
 }

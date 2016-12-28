@@ -8,8 +8,7 @@ import { Item } from '../item/item';
 @Component({
   selector: 'app-party',
   templateUrl: './party.component.html',
-  styleUrls: ['./party.component.css'],
-  providers: [PartyService]
+  styleUrls: ['./party.component.css']
 })
 export class PartyComponent implements OnInit {
   private party: Party;

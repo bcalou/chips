@@ -1,20 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
-import 'rxjs/add/operator/first';
 import { Party } from './party/party';
 import { Item } from './item/item';
+import { RandomService } from './random.service';
+import { UserService } from './user.service';
 
 @Injectable()
 export class PartyService {
-  private letters = [
-    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
-    'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D',
-    'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-    'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
-  ];
-
-  constructor(private af: AngularFire) { }
+  constructor(
+    private af: AngularFire,
+    private randomService: RandomService,
+    private userService: UserService
+  ) { }
 
   // Fetch a party based on its id
   get(id: number) {
@@ -28,7 +26,7 @@ export class PartyService {
 
   // Create a party
   create(title: string) {
-    let party = new Party(this.generateId(), title);
+    let party = new Party(this.randomService.generateId(), title);
 
     return new Promise((resolve, reject) => {
       this.af.database.list('/parties').push(party).then(() => {
@@ -45,9 +43,10 @@ export class PartyService {
       category.items = {};
     }
 
+    item.setUser(this.userService.getBasicUser());
     item.beforeSave();
 
-    category.items[this.generateId()] = item;
+    category.items[this.randomService.generateId()] = item;
     this.af.database.list('/parties').update(key, category.items);
   }
 
@@ -67,15 +66,5 @@ export class PartyService {
   // Get the firebase key of an items list
   getItemsListKey(party: Party, category: any) {
     return party['$key'] + '/categories/' + category.id + '/items';
-  }
-
-  // Generate a unique party id
-  generateId() {
-    let id = '';
-    for(let i = 0; i < 6; i++) {
-      id = id + this.letters[Math.floor(Math.random()*this.letters.length)];
-    }
-
-    return id;
   }
 }

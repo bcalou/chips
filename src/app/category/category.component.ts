@@ -1,8 +1,9 @@
-import { Component, OnInit, Input,Output, EventEmitter,
+import { Component, OnInit, Input, Output, EventEmitter,
          ViewChild, ElementRef, HostBinding } from '@angular/core';
 import { Item } from '../item/item';
 import { PartyService } from '../party.service';
 import { UserService } from '../user.service';
+import { AppStateService } from '../app-state.service';
 
 @Component({
   selector: 'app-category',
@@ -10,57 +11,40 @@ import { UserService } from '../user.service';
   styleUrls: ['./category.component.css']
 })
 export class CategoryComponent implements OnInit {
-  @Output() addItem: EventEmitter<any> = new EventEmitter();
-  @Output() removeItem: EventEmitter<any> = new EventEmitter();
+  @Output() addItemEvent: EventEmitter<any> = new EventEmitter();
+  @Output() removeItemEvent: EventEmitter<any> = new EventEmitter();
   @Input() category: any;
-  @ViewChild("newItemInput") newItemInput: ElementRef;
   @HostBinding('class.category--open') open: boolean = false;
   private newItem: Item = new Item();
-  private userIsIdentified: boolean;
-  private waitingForFocus: boolean; 
 
   constructor(
     private partyService: PartyService,
-    private userService: UserService
+    private userService: UserService,
+    private appStateService: AppStateService
   ) { }
 
   ngOnInit() {
-    this.watchUserIdentification();
-  }
-
-  // Wait for user identification
-  watchUserIdentification() {
-    this.userService.getUserIdentificationEvents().subscribe(null, null, () => {
-      this.userIsIdentified = true;
-
-      if(this.waitingForFocus) {
-        this.focusOnNewItemInput();
-      }
-    });
+    this.open = this.appStateService.categoryIsOpen(this.category);
   }
 
   // Handle item creation form submission
   submitItem() {
-    this.addItem.emit({item: this.newItem});
+    this.userService.identifyUser().subscribe({
+      next: () => {},
+      error: () => {},
+      complete: () => { this.addItem() }
+    });
+  }
+
+  // Add item into the category
+  addItem() {
+    this.addItemEvent.emit({item: this.newItem});
     this.newItem = new Item();
   }
 
   // Remove an item from the category
   onRemoveItem(item: Item) {
-    this.removeItem.emit({item: item});
-  }
-
-  // Ask for user identification
-  identifyUser() {
-    this.waitingForFocus = true;
-    this.userService.identifyUser();
-  }
-
-  // Focus on new item field
-  focusOnNewItemInput() {
-    setTimeout(() => {
-      this.newItemInput.nativeElement.focus()
-    });
+    this.removeItemEvent.emit({item: item});
   }
 
   // Get number of items inside category
@@ -68,7 +52,14 @@ export class CategoryComponent implements OnInit {
     return Object.keys(this.category.items).length;
   }
 
+  // Open and close the category
   toggle() {
-    this.open = !this.open;
+    this.open = this.appStateService.toggleCategory(this.category);
+  }
+
+  // Is the category without item?
+  isEmpty() {
+    return typeof(this.category.items) == 'undefined'
+      || this.category.items.length === 0;
   }
 }

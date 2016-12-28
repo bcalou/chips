@@ -6,7 +6,7 @@
     <app-category
       *ngFor="let category of party.categories | values | orderBy: ['order']"
       [category]="category"
-      (addItem)="addItem($event, category)"
-      (removeItem)="removeItem($event, category)"
+      (addItemEvent)="addItem($event, category)"
+      (removeItemEvent)="removeItem($event, category)"
     ></app-category>
 </div>
