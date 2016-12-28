@@ -16,9 +16,13 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.userService.getIdentificationSubject().subscribe({
-        next: () => { this.showComponent() },
-        error: () => {},
-        complete: () => { this.hideComponent() }
+        next: (userIsIdentified) => {
+          if(userIsIdentified) {
+            this.hideComponent()
+          } else {
+            this.showComponent()
+          }
+        }
     });
   }
 

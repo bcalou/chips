@@ -11,20 +11,15 @@ export class UserService {
   private user: User;
 
   constructor(private af: AngularFire) {
-    this.setIdentificationSubject();
+    this.identificationSubject = new Subject();
 
     if(this.userIsIdentified()) {
       this.fetchUser();
     }
   }
 
-  // Create a subject to watch identification subject
-  setIdentificationSubject() {
-    this.identificationSubject = new Subject();
-
-    if(this.userIsIdentified()) {
-      this.identificationSubject.complete();
-    }
+  getUser() {
+    return this.user;
   }
 
   // Return the identification subject to watch identification process
@@ -39,8 +34,13 @@ export class UserService {
 
   // Ask for user identification if needed
   identifyUser() {
-    this.identificationSubject.next();
+    this.identificationSubject.next(false);
 
+    return this.identificationSubject;
+  }
+
+  // Wait for user identification
+  waitForIdentification() {
     return this.identificationSubject;
   }
 
@@ -50,7 +50,7 @@ export class UserService {
     Cookie.set('userId', this.user.getId(), 365, '/');
 
     this.af.database.list('/users').push(this.user).then(() => {
-      this.identificationSubject.complete();
+      this.identificationSubject.next(true);
     });
   }
 
@@ -63,6 +63,7 @@ export class UserService {
       }
     }).subscribe((users) => {
       this.user = users[0];
+      this.identificationSubject.next(true);
     });
   }
 
@@ -77,5 +78,10 @@ export class UserService {
   // Get the current user id
   getUserId() {
     return Cookie.get('userId');
+  }
+
+  // Update the user
+  update() {
+    this.identificationSubject.next(false);
   }
 }

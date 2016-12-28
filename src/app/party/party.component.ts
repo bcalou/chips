@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Party } from './party';
@@ -11,9 +11,11 @@ import { Item } from '../item/item';
   styleUrls: ['./party.component.css']
 })
 export class PartyComponent implements OnInit {
+  @ViewChild("partyUrl") partyUrl: ElementRef;
   private party: Party;
   private subscription: Subscription;
   private url: string;
+  private urlCopied: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,5 +56,18 @@ export class PartyComponent implements OnInit {
   // Remove an item from a category
   removeItem($event, category) {
     this.partyService.removeItem(this.party, category, $event.item)
+  }
+
+  // Copy party URL to clipboard
+  copyUrl() {
+    let range = document.createRange();
+    let selection = window.getSelection();
+
+    selection.removeAllRanges();
+    range.selectNodeContents(this.partyUrl.nativeElement);
+    selection.addRange(range);
+    document.execCommand('copy');
+    selection.removeAllRanges();
+    this.urlCopied = true;
   }
 }

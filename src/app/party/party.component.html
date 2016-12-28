@@ -1,7 +1,15 @@
 <div *ngIf="party">
   <h1 class="text-center">{{party.title}}</h1>
 
-  Partagez cet événement : {{url}}
+  <div class="party__share">
+    Partagez cet événement :
+    <div class="party__url" #partyUrl>{{url}}</div>
+    <button (click)="copyUrl()" class="btn btn-primary party__copy">
+      <span class="glyphicon glyphicon-copy"></span>
+      <span *ngIf="!urlCopied">Copier l'URL</span>
+      <span *ngIf="urlCopied">URL copiée !</span>
+    </button>
+  </div>
 
     <app-category
       *ngFor="let category of party.categories | values | orderBy: ['order']"

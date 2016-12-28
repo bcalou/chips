@@ -29,11 +29,17 @@ export class CategoryComponent implements OnInit {
 
   // Handle item creation form submission
   submitItem() {
-    this.userService.identifyUser().subscribe({
-      next: () => {},
-      error: () => {},
-      complete: () => { this.addItem() }
-    });
+    if(this.userService.userIsIdentified()) {
+      this.addItem();
+    } else {
+      this.userService.identifyUser().subscribe({
+        next: (userIsIdentified) => {
+          if(userIsIdentified) {
+            this.addItem();
+          }
+        }
+      });
+    }
   }
 
   // Add item into the category

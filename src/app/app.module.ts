@@ -19,6 +19,7 @@ import { RandomService } from './random.service';
 
 import { ValuesPipe } from './values.pipe';
 import { OrderByPipe } from './order-by.pipe';
+import { UserWelcomeComponent } from './user-welcome/user-welcome.component';
 
 const appRoutes: Routes = [
   { path: 'party/:id', component: PartyComponent },
@@ -43,6 +44,7 @@ export const firebaseConfig = {
     ValuesPipe,
     UserComponent,
     OrderByPipe,
+    UserWelcomeComponent,
   ],
   imports: [
     BrowserModule,

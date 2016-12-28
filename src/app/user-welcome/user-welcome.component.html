@@ -1,0 +1,6 @@
+<div *ngIf="user" class="userWelcome__inner">
+  Bienvenue <span class="userWelcome__name">{{user.name}}</span>
+  <button (click)="update()" class="userWelcome__edit btn">
+    <span class="glyphicon glyphicon-pencil"></span>
+  </button>
+</div>

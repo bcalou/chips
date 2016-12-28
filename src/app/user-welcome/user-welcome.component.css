@@ -1,0 +1,14 @@
+.userWelcome__inner {
+  font-size: 1.4rem;
+  padding: 10px 0;
+  border-bottom: 3px solid #666;
+}
+
+.userWelcome__name {
+  font-weight: bold;
+}
+
+.userWelcome__edit {
+  margin-left: 10px;
+  color: black;
+}

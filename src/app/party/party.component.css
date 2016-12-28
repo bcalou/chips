@@ -1,0 +1,13 @@
+.party__share {
+  margin: 10px auto;
+  text-align: center;
+  font-size: 1.6rem;
+}
+
+.party__url {
+  font-weight: bold;
+}
+
+.party__copy {
+  margin: 10px auto;
+}

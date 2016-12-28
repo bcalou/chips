@@ -29,14 +29,20 @@ export const categories = {
     title: 'dessert',
     placeholder: 'Moussaka du patron'
   },
-  drinks: {
+  alcohols: {
     order: 6,
-    id: 'drinks',
-    title: 'boissons',
+    id: 'alcohols',
+    title: 'alcools',
     placeholder: 'Vodka Martini'
   },
-  others: {
+  softs: {
     order: 7,
+    id: 'softs',
+    title: 'softs',
+    placeholder: 'Jus de pomme'
+  },
+  others: {
+    order: 8,
     id: 'others',
     title: 'autres',
     placeholder: 'Cure-dents'
