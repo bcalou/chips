@@ -24,6 +24,7 @@
   background-color: #f0ad4e;
   border-radius: 5px;
   padding: 8px;
+  cursor: pointer;
 }
 
 .category__count {
