@@ -27,7 +27,7 @@ export const categories = {
     order: 5,
     id: 'dessert',
     title: 'dessert',
-    placeholder: 'Moussaka du patron'
+    placeholder: 'Mousse au chocolat'
   },
   alcohols: {
     order: 6,
